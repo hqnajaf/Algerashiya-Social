@@ -72,14 +72,19 @@
       border: none;
     }
 
-  #checkBtn {
-  background-color: #28a745; /* Green */
-  color: white;
-}
+    #checkBtn {
+      background-color: #28a745;
+      color: white;
+    }
 
-#checkBtn:hover {
-  background-color: #218838; /* Darker green when hover */
-}
+    #checkBtn:hover:enabled {
+      background-color: #218838;
+    }
+
+    #checkBtn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
 
     #resetBtn {
       background-color: #dc3545;
@@ -90,23 +95,39 @@
       background-color: #a71d2a;
     }
 
-    .not-found-msg {
+    .not-found-msg,
+    .success-msg {
       display: none;
-      color: red;
       font-weight: bold;
-      border: 2px solid red;
       padding: 10px;
       border-radius: 8px;
       width: 60%;
       margin-top: 10px;
       text-align: center;
+    }
+
+    .not-found-msg {
+      color: red;
+      border: 2px solid red;
       background-color: #ffeaea;
+    }
+
+    .success-msg {
+      color: green;
+      border: 2px solid green;
+      background-color: #eaffea;
     }
 
     .result-section {
       margin-top: 20px;
       display: none;
       width: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .result-section.show {
+      opacity: 1;
     }
 
     .result-section label {
@@ -132,9 +153,7 @@
 
   <div class="container">
 
-    <!-- الشعار -->
     <img src="Logo-Black.png" alt="شعار" />
-
     <h2>الجمعية العمومية</h2>
 
     <input type="tel" id="inputID" class="textbox"
@@ -142,16 +161,13 @@
       inputmode="tel" pattern="[0-9]*" maxlength="9" />
 
     <div class="button-group">
-      <button id="checkBtn" onclick="checkUser()">تحقق</button>
+      <button id="checkBtn" onclick="checkUser()" disabled>تحقق</button>
       <button id="resetBtn" onclick="resetForm()">مسح</button>
     </div>
 
-    <!-- رسالة عدم العثور -->
-    <div id="notFound" class="not-found-msg">
-      ⚠️ لم يتم العثور على السجل
-    </div>
+    <div id="notFound" class="not-found-msg">⚠️ لم يتم العثور على السجل</div>
+    <div id="successMsg" class="success-msg">✅ تم العثور على السجل</div>
 
-    <!-- النتائج -->
     <div id="result" class="result-section">
       <label>الاسم</label>
       <input type="text" id="nameBox" class="textbox" readonly />
@@ -177,7 +193,6 @@
   <script>
     let userList = [];
 
-    // Load CSV data
     fetch('data.csv')
       .then(response => response.text())
       .then(text => {
@@ -192,25 +207,23 @@
         });
       });
 
-    // Restrict input to digits only
-    document.getElementById('inputID').addEventListener('input', function () {
+    // Enable "تحقق" button only when 9 digits
+    const inputField = document.getElementById('inputID');
+    inputField.addEventListener('input', function () {
       this.value = this.value.replace(/\D/g, '');
+      document.getElementById('checkBtn').disabled = !(this.value.length === 8 || this.value.length === 9);
     });
 
     function checkUser() {
-      const input = document.getElementById('inputID').value.trim();
+      const input = inputField.value.trim();
       const nameBox = document.getElementById('nameBox');
       const cprBox = document.getElementById('cprBox');
       const mobileBox = document.getElementById('mobileBox');
       const resultSection = document.getElementById('result');
       const notFound = document.getElementById('notFound');
+      const successMsg = document.getElementById('successMsg');
       const cprField = document.getElementById('cprField');
       const mobileField = document.getElementById('mobileField');
-
-      if (!input) {
-        alert("الرجاء إدخال الرقم الشخصي أو رقم الهاتف");
-        return;
-      }
 
       const user = userList.find(u => u.cpr === input || u.mobile === input);
 
@@ -218,39 +231,44 @@
         nameBox.value = user.name;
         mobileBox.value = user.mobile;
         notFound.style.display = 'none';
+        successMsg.style.display = 'block';
         resultSection.style.display = 'block';
+        resultSection.classList.add('show');
 
         if (user.cpr === input) {
-          // Searched by CPR
           cprBox.value = user.cpr;
           cprField.style.display = 'block';
           mobileField.style.display = 'block';
-        } else if (user.mobile === input) {
-          // Searched by Mobile
+        } else {
           cprBox.value = '';
-          cprField.style.display = 'none'; // Hide CPR field
+          cprField.style.display = 'none';
           mobileField.style.display = 'block';
         }
       } else {
         resultSection.style.display = 'none';
+        resultSection.classList.remove('show');
+        successMsg.style.display = 'none';
         notFound.style.display = 'block';
       }
     }
 
     function resetForm() {
-      document.getElementById('inputID').value = '';
+      inputField.value = '';
+      document.getElementById('checkBtn').disabled = true;
       document.getElementById('nameBox').value = '';
       document.getElementById('cprBox').value = '';
       document.getElementById('mobileBox').value = '';
       document.getElementById('result').style.display = 'none';
+      document.getElementById('result').classList.remove('show');
       document.getElementById('notFound').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'none';
       document.getElementById('cprField').style.display = 'block';
       document.getElementById('mobileField').style.display = 'block';
-      document.getElementById('inputID').focus();
+      inputField.focus();
     }
 
-    document.getElementById('inputID').addEventListener("keyup", function (event) {
-      if (event.key === "Enter") {
+    inputField.addEventListener("keyup", function (event) {
+      if (event.key === "Enter" && !document.getElementById('checkBtn').disabled) {
         checkUser();
       }
     });
@@ -261,12 +279,9 @@
     }
 
     const now = new Date();
-    const gregorianYear = now.getFullYear();
-    document.getElementById('yearEn').textContent = gregorianYear;
-
+    document.getElementById('yearEn').textContent = now.getFullYear();
     const hijriFormatter = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', { year: 'numeric' });
-    const parts = hijriFormatter.formatToParts(now);
-    const hijriYear = parts.find(part => part.type === 'year').value;
+    const hijriYear = hijriFormatter.formatToParts(now).find(part => part.type === 'year').value;
     document.getElementById('yearHijri').textContent = toArabicNums(hijriYear);
   </script>
 
