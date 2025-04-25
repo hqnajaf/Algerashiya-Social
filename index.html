@@ -130,6 +130,26 @@
       opacity: 1;
     }
 
+    #requestRegisterBtn {
+      display: none;
+      margin-top: 10px;
+    }
+
+    #registerBtn {
+      background-color: #ff9900;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 210px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #registerBtn:hover {
+      background-color: #e68a00;
+    }
+
     .result-section label {
       display: block;
       margin-bottom: 6px;
@@ -166,6 +186,12 @@
     </div>
 
     <div id="notFound" class="not-found-msg">⚠️ لم يتم العثور على السجل</div>
+
+    <!-- New طلب تسجيل Button -->
+    <div id="requestRegisterBtn">
+      <button id="registerBtn">طلب تسجيل</button>
+    </div>
+
     <div id="successMsg" class="success-msg">✅ تم العثور على السجل</div>
 
     <div id="result" class="result-section">
@@ -207,7 +233,6 @@
         });
       });
 
-    // Enable "تحقق" button only when 9 digits
     const inputField = document.getElementById('inputID');
     inputField.addEventListener('input', function () {
       this.value = this.value.replace(/\D/g, '');
@@ -222,6 +247,7 @@
       const resultSection = document.getElementById('result');
       const notFound = document.getElementById('notFound');
       const successMsg = document.getElementById('successMsg');
+      const requestRegister = document.getElementById('requestRegisterBtn');
       const cprField = document.getElementById('cprField');
       const mobileField = document.getElementById('mobileField');
 
@@ -231,6 +257,7 @@
         nameBox.value = user.name;
         mobileBox.value = user.mobile;
         notFound.style.display = 'none';
+        requestRegister.style.display = 'none';
         successMsg.style.display = 'block';
         resultSection.style.display = 'block';
         resultSection.classList.add('show');
@@ -245,10 +272,11 @@
           mobileField.style.display = 'block';
         }
       } else {
+        successMsg.style.display = 'none';
         resultSection.style.display = 'none';
         resultSection.classList.remove('show');
-        successMsg.style.display = 'none';
         notFound.style.display = 'block';
+        requestRegister.style.display = 'block';
       }
     }
 
@@ -262,6 +290,7 @@
       document.getElementById('result').classList.remove('show');
       document.getElementById('notFound').style.display = 'none';
       document.getElementById('successMsg').style.display = 'none';
+      document.getElementById('requestRegisterBtn').style.display = 'none';
       document.getElementById('cprField').style.display = 'block';
       document.getElementById('mobileField').style.display = 'block';
       inputField.focus();
