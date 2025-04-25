@@ -151,15 +151,20 @@
       ⚠️ لم يتم العثور على السجل
     </div>
 
+    <!-- النتائج -->
     <div id="result" class="result-section">
       <label>الاسم</label>
       <input type="text" id="nameBox" class="textbox" readonly />
 
-      <label>الرقم الشخصي</label>
-      <input type="text" id="cprBox" class="textbox" readonly />
+      <div id="cprField">
+        <label>الرقم الشخصي</label>
+        <input type="text" id="cprBox" class="textbox" readonly />
+      </div>
 
-      <label>رقم الهاتف</label>
-      <input type="text" id="mobileBox" class="textbox" readonly />
+      <div id="mobileField">
+        <label>رقم الهاتف</label>
+        <input type="text" id="mobileBox" class="textbox" readonly />
+      </div>
     </div>
 
   </div>
@@ -187,7 +192,7 @@
         });
       });
 
-    // Restrict to digits only
+    // Restrict input to digits only
     document.getElementById('inputID').addEventListener('input', function () {
       this.value = this.value.replace(/\D/g, '');
     });
@@ -199,6 +204,8 @@
       const mobileBox = document.getElementById('mobileBox');
       const resultSection = document.getElementById('result');
       const notFound = document.getElementById('notFound');
+      const cprField = document.getElementById('cprField');
+      const mobileField = document.getElementById('mobileField');
 
       if (!input) {
         alert("الرجاء إدخال الرقم الشخصي أو رقم الهاتف");
@@ -209,10 +216,21 @@
 
       if (user) {
         nameBox.value = user.name;
-        cprBox.value = user.cpr;
         mobileBox.value = user.mobile;
-        resultSection.style.display = 'block';
         notFound.style.display = 'none';
+        resultSection.style.display = 'block';
+
+        if (user.cpr === input) {
+          // Searched by CPR
+          cprBox.value = user.cpr;
+          cprField.style.display = 'block';
+          mobileField.style.display = 'block';
+        } else if (user.mobile === input) {
+          // Searched by Mobile
+          cprBox.value = '';
+          cprField.style.display = 'none'; // Hide CPR field
+          mobileField.style.display = 'block';
+        }
       } else {
         resultSection.style.display = 'none';
         notFound.style.display = 'block';
@@ -226,6 +244,8 @@
       document.getElementById('mobileBox').value = '';
       document.getElementById('result').style.display = 'none';
       document.getElementById('notFound').style.display = 'none';
+      document.getElementById('cprField').style.display = 'block';
+      document.getElementById('mobileField').style.display = 'block';
       document.getElementById('inputID').focus();
     }
 
