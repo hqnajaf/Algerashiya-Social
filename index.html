@@ -22,9 +22,9 @@
     }
 
     .container {
-      max-width: 500px;
+      width: 90%; /* ✅ 90% of screen */
       margin: 0 auto;
-      padding: 10px 20px;
+      padding: 10px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -45,8 +45,7 @@
 
     .textbox {
       padding: 10px;
-      width: 100%;
-      max-width: 480px;
+      width: 60%;  /* ✅ 60% of container */
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -156,7 +155,7 @@
     fetch('data.csv')
       .then(response => response.text())
       .then(text => {
-        const rows = text.trim().split('\n').slice(1); // تخطي العنوان
+        const rows = text.trim().split('\n').slice(1);
         userList = rows.map(row => {
           const columns = row.split(',');
           return {
