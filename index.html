@@ -22,7 +22,7 @@
     }
 
     .container {
-      max-width: 400px;
+      max-width: 500px;
       margin: 0 auto;
       padding: 10px 20px;
       display: flex;
@@ -43,15 +43,17 @@
       font-size: 22px;
     }
 
-    input[type="text"] {
+    .textbox {
       padding: 10px;
       width: 100%;
+      max-width: 480px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
       margin-bottom: 15px;
       text-align: center;
       background-color: #fff;
+      box-sizing: border-box;
     }
 
     .button-group {
@@ -95,23 +97,11 @@
       width: 100%;
     }
 
-.result-section label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-  color: #333;
-  text-align: center; /* CENTER the label text */
-}
-
-
-    .readonly-box {
-      background-color: #e9ecef;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 15px;
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
+    .result-section label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #333;
       text-align: center;
     }
 
@@ -135,7 +125,7 @@
 
     <h2>الجمعية العمومية</h2>
 
-    <input type="text" id="inputID" placeholder="أدخل الرقم الشخصي أو رقم الهاتف" />
+    <input type="text" id="inputID" class="textbox" placeholder="أدخل الرقم الشخصي أو رقم الهاتف" />
 
     <div class="button-group">
       <button id="checkBtn" onclick="checkUser()">تحقق</button>
@@ -144,13 +134,13 @@
 
     <div id="result" class="result-section">
       <label>الاسم</label>
-      <input type="text" id="nameBox" class="readonly-box" readonly />
+      <input type="text" id="nameBox" class="textbox" readonly />
 
       <label>الرقم الشخصي</label>
-      <input type="text" id="cprBox" class="readonly-box" readonly />
+      <input type="text" id="cprBox" class="textbox" readonly />
 
       <label>رقم الهاتف</label>
-      <input type="text" id="mobileBox" class="readonly-box" readonly />
+      <input type="text" id="mobileBox" class="textbox" readonly />
     </div>
 
   </div>
@@ -160,11 +150,9 @@
     <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
   </footer>
 
-  <!-- JavaScript -->
   <script>
     let userList = [];
 
-    // تحميل بيانات CSV
     fetch('data.csv')
       .then(response => response.text())
       .then(text => {
@@ -179,7 +167,6 @@
         });
       });
 
-    // البحث
     function checkUser() {
       const input = document.getElementById('inputID').value.trim();
       const nameBox = document.getElementById('nameBox');
@@ -205,7 +192,6 @@
       }
     }
 
-    // المسح
     function resetForm() {
       document.getElementById('inputID').value = '';
       document.getElementById('nameBox').value = '';
@@ -214,14 +200,12 @@
       document.getElementById('result').style.display = 'none';
     }
 
-    // دعم الضغط على Enter
     document.getElementById('inputID').addEventListener("keyup", function (event) {
       if (event.key === "Enter") {
         checkUser();
       }
     });
 
-    // السنة الميلادية والهجرية
     function toArabicNums(str) {
       const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
       return str.toString().split('').map(d => arabicNumbers[d] || d).join('');
