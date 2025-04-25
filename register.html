@@ -27,41 +27,43 @@
       align-items: center;
       text-align: center;
       flex: 1;
-    }
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .top-bar img {
-      max-width: 120px;
+      position: relative;
     }
     .home-btn {
+      position: absolute;
+      left: 10px;
+      top: 10px;
       background-color: #28a745;
       color: white;
-      padding: 8px 10px;
-      font-size: 18px;
-      border-radius: 6px;
       border: none;
+      padding: 6px;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      font-size: 18px;
       cursor: pointer;
     }
-    .home-btn:hover {
-      background-color: #218838;
+    .home-btn:hover { background-color: #218838; }
+    img {
+      max-width: 120px;
+      margin-top: 20px;
+      margin-bottom: 5px;
     }
     h2 {
       margin: 5px 0 15px;
       font-size: 22px;
     }
-    input[type="date"] {
+    .dob-selectors {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    select {
       padding: 10px;
       font-size: 16px;
-      width: 60%;
       border-radius: 6px;
       border: 1px solid #ccc;
-      margin-bottom: 15px;
-      text-align: center;
       background-color: #fff;
     }
     button {
@@ -116,17 +118,41 @@
 
 <div class="container">
 
-  <div class="top-bar">
-    <img src="Logo-Black.png" alt="شعار" />
-    <button class="home-btn" onclick="location.href='index.html'">
-      <i class="fas fa-home"></i>
-    </button>
-  </div>
+  <button class="home-btn" onclick="location.href='index.html'">
+    <i class="fas fa-home"></i>
+  </button>
+
+  <img src="Logo-Black.png" alt="شعار" />
 
   <h2>طلب التسجيل للجنة العمومية</h2>
 
-  <label for="dob" style="font-weight: bold;">تاريخ الميلاد</label>
-  <input type="date" id="dob" name="dob" required>
+  <div class="dob-selectors">
+    <select id="day">
+      <option value="">اليوم</option>
+      <!-- Days will be added by JavaScript -->
+    </select>
+
+    <select id="month">
+      <option value="">الشهر</option>
+      <option value="1">يناير</option>
+      <option value="2">فبراير</option>
+      <option value="3">مارس</option>
+      <option value="4">أبريل</option>
+      <option value="5">مايو</option>
+      <option value="6">يونيو</option>
+      <option value="7">يوليو</option>
+      <option value="8">أغسطس</option>
+      <option value="9">سبتمبر</option>
+      <option value="10">أكتوبر</option>
+      <option value="11">نوفمبر</option>
+      <option value="12">ديسمبر</option>
+    </select>
+
+    <select id="year">
+      <option value="">السنة</option>
+      <!-- Years will be added by JavaScript -->
+    </select>
+  </div>
 
   <button onclick="verifyAge()">تحقق من العمر</button>
 
@@ -150,17 +176,46 @@
 </footer>
 
 <script>
+function populateDays() {
+  const daySelect = document.getElementById('day');
+  for (let d = 1; d <= 31; d++) {
+    const option = document.createElement('option');
+    option.value = d;
+    option.textContent = d;
+    daySelect.appendChild(option);
+  }
+}
+
+function populateYears() {
+  const yearSelect = document.getElementById('year');
+  const thisYear = new Date().getFullYear();
+  for (let y = thisYear - 70; y <= thisYear - 21; y++) {
+    const option = document.createElement('option');
+    option.value = y;
+    option.textContent = y;
+    yearSelect.appendChild(option);
+  }
+}
+
+populateDays();
+populateYears();
+
 function verifyAge() {
-  const dob = document.getElementById('dob').value;
-  if (!dob) {
-    alert('الرجاء تحديد تاريخ الميلاد');
+  const day = document.getElementById('day').value;
+  const month = document.getElementById('month').value;
+  const year = document.getElementById('year').value;
+
+  if (!day || !month || !year) {
+    alert('الرجاء تحديد تاريخ الميلاد بالكامل');
     return;
   }
-  const birthDate = new Date(dob);
+
+  const birthDate = new Date(year, month - 1, day);
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const m = today.getMonth() - birthDate.getMonth();
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
+
   if (age >= 21) {
     document.getElementById('successMessage').style.display = 'block';
     document.getElementById('nextBtn').style.display = 'inline-block';
