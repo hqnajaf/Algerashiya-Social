@@ -23,17 +23,19 @@
 
     .container {
       max-width: 400px;
-      margin: auto;
-      padding: 20px;
+      margin: 0 auto;
+      padding: 10px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
+      flex: 1;
     }
 
     img {
       max-width: 120px;
-      margin: 5px 0;
+      margin-top: 0px;
+      margin-bottom: 5px;
     }
 
     h2 {
@@ -113,7 +115,6 @@
     }
 
     footer {
-      margin-top: auto;
       font-size: 14px;
       color: #555;
       border-top: 1px solid #ddd;
@@ -151,15 +152,14 @@
       <input type="text" id="mobileBox" class="readonly-box" readonly />
     </div>
 
-    <!-- الفوتر -->
-    <footer>
-      <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
-      <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
-    </footer>
-
   </div>
 
-  <!-- سكربت -->
+  <footer>
+    <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
+    <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
+  </footer>
+
+  <!-- JavaScript -->
   <script>
     let userList = [];
 
