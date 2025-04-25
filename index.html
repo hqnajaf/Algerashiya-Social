@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>البحث عن التسجيل</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     html, body {
       height: 100%;
@@ -36,6 +37,22 @@
       max-width: 120px;
       margin-top: 0px;
       margin-bottom: 5px;
+    }
+
+    .social-icons {
+      margin: 10px 0;
+    }
+
+    .social-icons a {
+      margin: 0 8px;
+      font-size: 28px;
+      color: #555;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: #007bff;
     }
 
     h2 {
@@ -174,6 +191,13 @@
   <div class="container">
 
     <img src="Logo-Black.png" alt="شعار" />
+
+    <div class="social-icons">
+      <a href="https://www.instagram.com/matam_algerashiya" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://api.whatsapp.com/send?phone=97337777105&text=إشتراك" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://t.me/joinchat/CfnBEtFt0C8xOTg0" target="_blank"><i class="fab fa-telegram"></i></a>
+    </div>
+
     <h2>الجمعية العمومية</h2>
 
     <input type="tel" id="inputID" class="textbox"
@@ -187,7 +211,6 @@
 
     <div id="notFound" class="not-found-msg">⚠️ لم يتم العثور على السجل</div>
 
-    <!-- New طلب تسجيل Button -->
     <div id="requestRegisterBtn">
       <button id="registerBtn">طلب تسجيل</button>
     </div>
