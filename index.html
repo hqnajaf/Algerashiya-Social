@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>البحث عن التسجيل</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -10,23 +10,30 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
       font-family: 'Cairo', sans-serif;
       background-color: #f9f9f9;
       direction: rtl;
+      display: flex;
+      flex-direction: column;
     }
 
     body {
       flex: 1;
-      text-align: center;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     img {
       max-width: 120px;
-      margin-top: 5px;
-      margin-bottom: 5px;
+      margin: 5px 0;
     }
 
     h2 {
@@ -36,7 +43,7 @@
 
     input[type="text"] {
       padding: 10px;
-      width: 280px;
+      width: 100%;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -45,11 +52,18 @@
       background-color: #fff;
     }
 
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
     button {
       padding: 10px;
-      width: 120px;
+      width: 100px;
       font-size: 16px;
-      margin: 5px;
       border-radius: 6px;
       cursor: pointer;
       border: none;
@@ -76,8 +90,7 @@
     .result-section {
       margin-top: 20px;
       display: none;
-      text-align: center;
-      padding: 10px 20px;
+      width: 100%;
     }
 
     .result-section label {
@@ -93,7 +106,7 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       margin-bottom: 15px;
-      width: 280px;
+      width: 100%;
       padding: 10px;
       font-size: 16px;
       text-align: center;
@@ -113,42 +126,48 @@
 </head>
 <body>
 
-  <!-- الشعار -->
-  <img src="Logo-Black.png" alt="شعار">
+  <div class="container">
 
-  <h2>الجمعية العمومية</h2>
+    <!-- الشعار -->
+    <img src="Logo-Black.png" alt="شعار" />
 
-  <input type="text" id="inputID" placeholder="أدخل الرقم الشخصي أو رقم الهاتف">
-  <br>
-  <button id="checkBtn" onclick="checkUser()">تحقق</button>
-  <button id="resetBtn" onclick="resetForm()">مسح</button>
+    <h2>الجمعية العمومية</h2>
 
-  <div id="result" class="result-section">
-    <label>الأسم</label>
-    <input type="text" id="nameBox" class="readonly-box" readonly>
+    <input type="text" id="inputID" placeholder="أدخل الرقم الشخصي أو رقم الهاتف" />
 
-    <label>الرقم الشخصي</label>
-    <input type="text" id="cprBox" class="readonly-box" readonly>
+    <div class="button-group">
+      <button id="checkBtn" onclick="checkUser()">تحقق</button>
+      <button id="resetBtn" onclick="resetForm()">مسح</button>
+    </div>
 
-    <label>رقم الهاتف</label>
-    <input type="text" id="mobileBox" class="readonly-box" readonly>
+    <div id="result" class="result-section">
+      <label>الاسم</label>
+      <input type="text" id="nameBox" class="readonly-box" readonly />
+
+      <label>الرقم الشخصي</label>
+      <input type="text" id="cprBox" class="readonly-box" readonly />
+
+      <label>رقم الهاتف</label>
+      <input type="text" id="mobileBox" class="readonly-box" readonly />
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+      <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
+      <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
+    </footer>
+
   </div>
 
-  <!-- الفوتر -->
-  <footer>
-    <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
-    <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
-  </footer>
-
-  <!-- JavaScript -->
+  <!-- سكربت -->
   <script>
     let userList = [];
 
-    // تحميل البيانات من CSV
+    // تحميل بيانات CSV
     fetch('data.csv')
       .then(response => response.text())
       .then(text => {
-        const rows = text.trim().split('\n').slice(1); // حذف العنوان
+        const rows = text.trim().split('\n').slice(1); // تخطي العنوان
         userList = rows.map(row => {
           const columns = row.split(',');
           return {
@@ -159,7 +178,7 @@
         });
       });
 
-    // تنفيذ البحث
+    // البحث
     function checkUser() {
       const input = document.getElementById('inputID').value.trim();
       const nameBox = document.getElementById('nameBox');
@@ -185,7 +204,7 @@
       }
     }
 
-    // زر المسح
+    // المسح
     function resetForm() {
       document.getElementById('inputID').value = '';
       document.getElementById('nameBox').value = '';
@@ -195,19 +214,18 @@
     }
 
     // دعم الضغط على Enter
-    document.getElementById('inputID').addEventListener("keyup", function(event) {
+    document.getElementById('inputID').addEventListener("keyup", function (event) {
       if (event.key === "Enter") {
         checkUser();
       }
     });
 
-    // تحويل الأرقام إلى عربية
+    // السنة الميلادية والهجرية
     function toArabicNums(str) {
       const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
       return str.toString().split('').map(d => arabicNumbers[d] || d).join('');
     }
 
-    // عرض السنة الميلادية والهجرية
     const now = new Date();
     const gregorianYear = now.getFullYear();
     document.getElementById('yearEn').textContent = gregorianYear;
@@ -217,6 +235,5 @@
     const hijriYear = parts.find(part => part.type === 'year').value;
     document.getElementById('yearHijri').textContent = toArabicNums(hijriYear);
   </script>
-
 </body>
 </html>
