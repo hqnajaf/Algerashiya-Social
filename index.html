@@ -3,28 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CPR / Mobile Checker</title>
+  <title>حسينية الگراشية</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px;
+      padding: 40px 20px;
       background-color: #f9f9f9;
     }
-    input, button {
+    img {
+      max-width: 200px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    input {
       padding: 12px;
-      margin: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
       width: 250px;
-      box-sizing: border-box;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      text-align: center;
     }
     button {
+      padding: 12px;
+      width: 150px;
+      font-size: 16px;
       background-color: #007bff;
       color: white;
       border: none;
-      width: 150px;
+      border-radius: 6px;
+      cursor: pointer;
     }
     button:hover {
       background-color: #0056b3;
@@ -38,7 +50,10 @@
 </head>
 <body>
 
-  <h2>Check Your Registration</h2>
+  <!-- Centered Logo -->
+  <img src="Logo-Black.png" alt="Logo">
+
+  <h2>الجمعية العمومية</h2>
   <input type="text" id="inputID" placeholder="Enter CPR or Mobile">
   <br>
   <button onclick="checkUser()">Check</button>
@@ -48,11 +63,11 @@
   <script>
     let userList = [];
 
-    // Load the CSV when page loads
+    // Load CSV data when the page loads
     fetch('data.csv')
       .then(response => response.text())
       .then(text => {
-        const rows = text.trim().split('\n').slice(1); // skip header
+        const rows = text.trim().split('\n').slice(1); // Skip header
         userList = rows.map(row => {
           const columns = row.split(',');
           return {
@@ -68,7 +83,7 @@
       const resultDiv = document.getElementById('result');
 
       if (!input) {
-        resultDiv.innerHTML = "❌ Please enter CPR or Mobile.";
+        resultDiv.innerHTML = "❌ يرجى ادخال الرقم الشخصي أو رقم الهاتف";
         resultDiv.style.color = "red";
         return;
       }
@@ -76,10 +91,10 @@
       const user = userList.find(u => u.cpr === input || u.mobile === input);
 
       if (user) {
-        resultDiv.innerHTML = `✅ Name: ${user.name}`;
+        resultDiv.innerHTML = `✅ <span style="color: green;">Name: ${user.name}</span>`;
         resultDiv.style.color = "green";
       } else {
-        resultDiv.innerHTML = "❌ No record found.";
+        resultDiv.innerHTML = "❌ لم يتم العثور على أي سجل.";
         resultDiv.style.color = "red";
       }
     }
