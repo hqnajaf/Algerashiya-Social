@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CPR / Mobile Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 250px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      width: 150px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Check Your Registration</h2>
+  <input type="text" id="inputID" placeholder="Enter CPR or Mobile">
+  <br>
+  <button onclick="checkUser()">Check</button>
+
+  <div id="result"></div>
+
+  <script>
+    let userList = [];
+
+    // Load the CSV when page loads
+    fetch('data.csv')
+      .then(response => response.text())
+      .then(text => {
+        const rows = text.trim().split('\n').slice(1); // skip header
+        userList = rows.map(row => {
+          const columns = row.split(',');
+          return {
+            cpr: columns[0].trim(),
+            name: columns[1].trim(),
+            mobile: columns[2].trim()
+          };
+        });
+      });
+
+    function checkUser() {
+      const input = document.getElementById('inputID').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      if (!input) {
+        resultDiv.innerHTML = "❌ Please enter CPR or Mobile.";
+        resultDiv.style.color = "red";
+        return;
+      }
+
+      const user = userList.find(u => u.cpr === input || u.mobile === input);
+
+      if (user) {
+        resultDiv.innerHTML = `✅ Name: ${user.name}`;
+        resultDiv.style.color = "green";
+      } else {
+        resultDiv.innerHTML = "❌ No record found.";
+        resultDiv.style.color = "red";
+      }
+    }
+  </script>
+
+</body>
+</html>
