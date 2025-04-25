@@ -7,20 +7,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
+    * { font-family: 'Cairo', sans-serif; }
+
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      font-family: 'Cairo', sans-serif;
       background-color: #f9f9f9;
       direction: rtl;
       display: flex;
       flex-direction: column;
     }
 
-    body {
-      flex: 1;
-    }
+    body { flex: 1; }
 
     .container {
       width: 90%;
@@ -35,25 +34,8 @@
 
     img {
       max-width: 120px;
-      margin-top: 0px;
+      margin-top: 0;
       margin-bottom: 5px;
-    }
-
-    .social-icons {
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .social-icons a {
-      margin: 0 6px;
-      font-size: 20px;
-      color: #555;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .social-icons a:hover {
-      color: #007bff;
     }
 
     h2 {
@@ -94,11 +76,7 @@
       background-color: #28a745;
       color: white;
     }
-
-    #checkBtn:hover:enabled {
-      background-color: #218838;
-    }
-
+    #checkBtn:hover:enabled { background-color: #218838; }
     #checkBtn:disabled {
       background-color: #cccccc;
       cursor: not-allowed;
@@ -108,10 +86,7 @@
       background-color: #dc3545;
       color: white;
     }
-
-    #resetBtn:hover {
-      background-color: #a71d2a;
-    }
+    #resetBtn:hover { background-color: #a71d2a; }
 
     .not-found-msg,
     .success-msg {
@@ -162,11 +137,9 @@
       font-size: 16px;
       border-radius: 6px;
       cursor: pointer;
+      margin-top: 10px;
     }
-
-    #registerBtn:hover {
-      background-color: #e68a00;
-    }
+    #registerBtn:hover { background-color: #e68a00; }
 
     .result-section label {
       display: block;
@@ -175,6 +148,20 @@
       color: #333;
       text-align: center;
     }
+
+    .social-icons {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .social-icons a {
+      margin: 0 6px;
+      font-size: 20px;
+      color: #555;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .social-icons a:hover { color: #007bff; }
 
     footer {
       font-size: 14px;
@@ -189,155 +176,146 @@
 </head>
 <body>
 
-  <div class="container">
+<div class="container">
+  <img src="Logo-Black.png" alt="شعار" />
+  <h2>الجمعية العمومية</h2>
 
-    <img src="Logo-Black.png" alt="شعار" />
+  <input type="tel" id="inputID" class="textbox"
+    placeholder="أدخل الرقم الشخصي أو رقم الهاتف"
+    inputmode="tel" pattern="[0-9]*" maxlength="9" />
 
-    <h2>الجمعية العمومية</h2>
-
-    <input type="tel" id="inputID" class="textbox"
-      placeholder="أدخل الرقم الشخصي أو رقم الهاتف"
-      inputmode="tel" pattern="[0-9]*" maxlength="9" />
-
-    <div class="button-group">
-      <button id="checkBtn" onclick="checkUser()" disabled>تحقق</button>
-      <button id="resetBtn" onclick="resetForm()">مسح</button>
-    </div>
-
-    <div id="notFound" class="not-found-msg">⚠️ لم يتم العثور على السجل</div>
-
-    <div id="requestRegisterBtn">
-      <button id="registerBtn">طلب تسجيل</button>
-    </div>
-
-    <div id="successMsg" class="success-msg">✅ تم العثور على السجل</div>
-
-    <div id="result" class="result-section">
-      <label>الاسم</label>
-      <input type="text" id="nameBox" class="textbox" readonly />
-
-      <div id="cprField">
-        <label>الرقم الشخصي</label>
-        <input type="text" id="cprBox" class="textbox" readonly />
-      </div>
-
-      <div id="mobileField">
-        <label>رقم الهاتف</label>
-        <input type="text" id="mobileBox" class="textbox" readonly />
-      </div>
-    </div>
-
+  <div class="button-group">
+    <button id="checkBtn" onclick="checkUser()" disabled>تحقق</button>
+    <button id="resetBtn" onclick="resetForm()">مسح</button>
   </div>
 
-  <!-- Moved Social Icons Here -->
-  <div class="social-icons">
-    <a href="https://www.instagram.com/matam_algerashiya" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://api.whatsapp.com/send?phone=97337777105&text=إشتراك" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    <a href="https://t.me/joinchat/CfnBEtFt0C8xOTg0" target="_blank"><i class="fab fa-telegram"></i></a>
+  <div id="notFound" class="not-found-msg">⚠️ لم يتم العثور على السجل</div>
+
+  <div id="requestRegisterBtn">
+    <button id="registerBtn" onclick="window.location.href='register.html'">طلب تسجيل</button>
   </div>
 
-  <footer>
-    <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
-    <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
-  </footer>
+  <div id="successMsg" class="success-msg">✅ تم العثور على السجل</div>
 
-  <script>
-    let userList = [];
+  <div id="result" class="result-section">
+    <label>الاسم</label>
+    <input type="text" id="nameBox" class="textbox" readonly />
 
-    fetch('data.csv')
-      .then(response => response.text())
-      .then(text => {
-        const rows = text.trim().split('\n').slice(1);
-        userList = rows.map(row => {
-          const columns = row.split(',');
-          return {
-            cpr: columns[0].trim(),
-            name: columns[1].trim(),
-            mobile: columns[2].trim()
-          };
-        });
-      });
+    <div id="cprField">
+      <label>الرقم الشخصي</label>
+      <input type="text" id="cprBox" class="textbox" readonly />
+    </div>
 
-    const inputField = document.getElementById('inputID');
-    inputField.addEventListener('input', function () {
-      this.value = this.value.replace(/\D/g, '');
-      document.getElementById('checkBtn').disabled = !(this.value.length === 8 || this.value.length === 9);
+    <div id="mobileField">
+      <label>رقم الهاتف</label>
+      <input type="text" id="mobileBox" class="textbox" readonly />
+    </div>
+  </div>
+</div>
+
+<div class="social-icons">
+  <a href="https://www.instagram.com/matam_algerashiya" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://api.whatsapp.com/send?phone=97337777105&text=إشتراك" target="_blank"><i class="fab fa-whatsapp"></i></a>
+  <a href="https://t.me/joinchat/CfnBEtFt0C8xOTg0" target="_blank"><i class="fab fa-telegram"></i></a>
+</div>
+
+<footer>
+  <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
+  <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
+</footer>
+
+<script>
+let userList = [];
+
+fetch('data.csv')
+  .then(response => response.text())
+  .then(text => {
+    const rows = text.trim().split('\n').slice(1);
+    userList = rows.map(row => {
+      const columns = row.split(',');
+      return {
+        cpr: columns[0].trim(),
+        name: columns[1].trim(),
+        mobile: columns[2].trim()
+      };
     });
+  });
 
-    function checkUser() {
-      const input = inputField.value.trim();
-      const nameBox = document.getElementById('nameBox');
-      const cprBox = document.getElementById('cprBox');
-      const mobileBox = document.getElementById('mobileBox');
-      const resultSection = document.getElementById('result');
-      const notFound = document.getElementById('notFound');
-      const successMsg = document.getElementById('successMsg');
-      const requestRegister = document.getElementById('requestRegisterBtn');
-      const cprField = document.getElementById('cprField');
-      const mobileField = document.getElementById('mobileField');
+const inputField = document.getElementById('inputID');
+inputField.addEventListener('input', function() {
+  this.value = this.value.replace(/\D/g, '');
+  document.getElementById('checkBtn').disabled = !(this.value.length === 8 || this.value.length === 9);
+});
 
-      const user = userList.find(u => u.cpr === input || u.mobile === input);
+function checkUser() {
+  const input = inputField.value.trim();
+  const nameBox = document.getElementById('nameBox');
+  const cprBox = document.getElementById('cprBox');
+  const mobileBox = document.getElementById('mobileBox');
+  const resultSection = document.getElementById('result');
+  const notFound = document.getElementById('notFound');
+  const successMsg = document.getElementById('successMsg');
+  const requestRegister = document.getElementById('requestRegisterBtn');
+  const cprField = document.getElementById('cprField');
+  const mobileField = document.getElementById('mobileField');
 
-      if (user) {
-        nameBox.value = user.name;
-        mobileBox.value = user.mobile;
-        notFound.style.display = 'none';
-        requestRegister.style.display = 'none';
-        successMsg.style.display = 'block';
-        resultSection.style.display = 'block';
-        resultSection.classList.add('show');
+  const user = userList.find(u => u.cpr === input || u.mobile === input);
 
-        if (user.cpr === input) {
-          cprBox.value = user.cpr;
-          cprField.style.display = 'block';
-          mobileField.style.display = 'block';
-        } else {
-          cprBox.value = '';
-          cprField.style.display = 'none';
-          mobileField.style.display = 'block';
-        }
-      } else {
-        successMsg.style.display = 'none';
-        resultSection.style.display = 'none';
-        resultSection.classList.remove('show');
-        notFound.style.display = 'block';
-        requestRegister.style.display = 'block';
-      }
+  if (user) {
+    nameBox.value = user.name;
+    mobileBox.value = user.mobile;
+    notFound.style.display = 'none';
+    requestRegister.style.display = 'none';
+    successMsg.style.display = 'block';
+    resultSection.style.display = 'block';
+    resultSection.classList.add('show');
+
+    if (user.cpr === input) {
+      cprBox.value = user.cpr;
+      cprField.style.display = 'block';
+      mobileField.style.display = 'block';
+    } else {
+      cprBox.value = '';
+      cprField.style.display = 'none';
+      mobileField.style.display = 'block';
     }
+  } else {
+    successMsg.style.display = 'none';
+    resultSection.style.display = 'none';
+    resultSection.classList.remove('show');
+    notFound.style.display = 'block';
+    requestRegister.style.display = 'block';
+  }
+}
 
-    function resetForm() {
-      inputField.value = '';
-      document.getElementById('checkBtn').disabled = true;
-      document.getElementById('nameBox').value = '';
-      document.getElementById('cprBox').value = '';
-      document.getElementById('mobileBox').value = '';
-      document.getElementById('result').style.display = 'none';
-      document.getElementById('result').classList.remove('show');
-      document.getElementById('notFound').style.display = 'none';
-      document.getElementById('successMsg').style.display = 'none';
-      document.getElementById('requestRegisterBtn').style.display = 'none';
-      document.getElementById('cprField').style.display = 'block';
-      document.getElementById('mobileField').style.display = 'block';
-      inputField.focus();
-    }
+function resetForm() {
+  inputField.value = '';
+  document.getElementById('checkBtn').disabled = true;
+  document.getElementById('nameBox').value = '';
+  document.getElementById('cprBox').value = '';
+  document.getElementById('mobileBox').value = '';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('notFound').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'none';
+  document.getElementById('requestRegisterBtn').style.display = 'none';
+  document.getElementById('cprField').style.display = 'block';
+  document.getElementById('mobileField').style.display = 'block';
+  inputField.focus();
+}
 
-    inputField.addEventListener("keyup", function (event) {
-      if (event.key === "Enter" && !document.getElementById('checkBtn').disabled) {
-        checkUser();
-      }
-    });
+inputField.addEventListener("keyup", function (event) {
+  if (event.key === "Enter" && !document.getElementById('checkBtn').disabled) {
+    checkUser();
+  }
+});
 
-    function toArabicNums(str) {
-      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-      return str.toString().split('').map(d => arabicNumbers[d] || d).join('');
-    }
-
-    const now = new Date();
-    document.getElementById('yearEn').textContent = now.getFullYear();
-    const hijriFormatter = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', { year: 'numeric' });
-    const hijriYear = hijriFormatter.formatToParts(now).find(part => part.type === 'year').value;
-    document.getElementById('yearHijri').textContent = toArabicNums(hijriYear);
-  </script>
+const now = new Date();
+document.getElementById('yearEn').textContent = now.getFullYear();
+const hijriFormatter = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', { year: 'numeric' });
+const hijriYear = hijriFormatter.formatToParts(now).find(part => part.type === 'year').value;
+document.getElementById('yearHijri').textContent = hijriYear;
+</script>
 
 </body>
 </html>
