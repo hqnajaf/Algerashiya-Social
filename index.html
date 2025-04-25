@@ -11,16 +11,20 @@
       text-align: center;
       padding: 20px;
       background-color: #f9f9f9;
+      direction: rtl;
     }
+
     img {
       max-width: 120px;
       margin-top: 5px;
-      margin-bottom: 1px;
+      margin-bottom: 5px;
     }
+
     h2 {
       margin: 5px 0 15px;
       font-size: 22px;
     }
+
     input[type="text"] {
       padding: 10px;
       width: 280px;
@@ -28,8 +32,10 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       margin-bottom: 15px;
-      text-align: center;
+      text-align: right;
+      background-color: #fff;
     }
+
     button {
       padding: 10px;
       width: 120px;
@@ -39,40 +45,64 @@
       cursor: pointer;
       border: none;
     }
+
     #checkBtn {
       background-color: #007bff;
       color: white;
     }
+
     #checkBtn:hover {
       background-color: #0056b3;
     }
+
     #resetBtn {
       background-color: #dc3545;
       color: white;
     }
+
     #resetBtn:hover {
       background-color: #a71d2a;
     }
+
     .result-section {
       margin-top: 20px;
       display: none;
+      text-align: right;
+      padding: 10px 20px;
     }
+
     .result-section label {
       display: block;
       margin-bottom: 6px;
       font-weight: bold;
       color: #333;
     }
+
     .readonly-box {
       background-color: #e9ecef;
       border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      width: 280px;
+      padding: 10px;
+      font-size: 16px;
+      text-align: right;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #555;
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      line-height: 1.8;
     }
   </style>
 </head>
 <body>
 
-  <!-- Centered Logo -->
-  <img src="Logo-Black.png" alt="Logo">
+  <!-- الشعار -->
+  <img src="Logo-Black.png" alt="شعار">
 
   <h2>الجمعية العمومية</h2>
 
@@ -92,10 +122,16 @@
     <input type="text" id="mobileBox" class="readonly-box" readonly>
   </div>
 
+  <!-- الفوتر بثلاثة أسطر -->
+<footer>
+  <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
+  <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
+</footer>
+
+
   <script>
     let userList = [];
 
-    // Load CSV data when the page loads
     fetch('data.csv')
       .then(response => response.text())
       .then(text => {
@@ -142,6 +178,21 @@
       document.getElementById('mobileBox').value = '';
       document.getElementById('result').style.display = 'none';
     }
+
+    // عرض السنة الميلادية والهجرية
+    function toArabicNums(str) {
+      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+      return str.toString().split('').map(d => arabicNumbers[d] || d).join('');
+    }
+
+    const now = new Date();
+    const gregorianYear = now.getFullYear();
+    document.getElementById('yearEn').textContent = gregorianYear;
+
+    const hijriFormatter = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', { year: 'numeric' });
+    const parts = hijriFormatter.formatToParts(now);
+    const hijriYear = parts.find(part => part.type === 'year').value;
+    document.getElementById('yearHijri').textContent = toArabicNums(hijriYear);
   </script>
 
 </body>
