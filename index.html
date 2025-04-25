@@ -22,7 +22,7 @@
     }
 
     .container {
-      width: 90%; /* ✅ 90% of screen */
+      width: 90%;
       margin: 0 auto;
       padding: 10px 0;
       display: flex;
@@ -45,7 +45,7 @@
 
     .textbox {
       padding: 10px;
-      width: 80%;  /* ✅ 60% of container */
+      width: 60%;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -60,7 +60,7 @@
       justify-content: center;
       gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     button {
@@ -88,6 +88,19 @@
 
     #resetBtn:hover {
       background-color: #a71d2a;
+    }
+
+    .not-found-msg {
+      display: none;
+      color: red;
+      font-weight: bold;
+      border: 2px solid red;
+      padding: 10px;
+      border-radius: 8px;
+      width: 60%;
+      margin-top: 10px;
+      text-align: center;
+      background-color: #ffeaea;
     }
 
     .result-section {
@@ -124,11 +137,18 @@
 
     <h2>الجمعية العمومية</h2>
 
-    <input type="tel" id="inputID" class="textbox" placeholder="أدخل الرقم الشخصي أو رقم الهاتف" inputmode="tel" pattern="[0-9]*" />
+    <input type="tel" id="inputID" class="textbox"
+      placeholder="أدخل الرقم الشخصي أو رقم الهاتف"
+      inputmode="tel" pattern="[0-9]*" maxlength="9" />
 
     <div class="button-group">
       <button id="checkBtn" onclick="checkUser()">تحقق</button>
       <button id="resetBtn" onclick="resetForm()">مسح</button>
+    </div>
+
+    <!-- رسالة عدم العثور -->
+    <div id="notFound" class="not-found-msg">
+      ⚠️ لم يتم العثور على السجل
     </div>
 
     <div id="result" class="result-section">
@@ -152,6 +172,7 @@
   <script>
     let userList = [];
 
+    // Load CSV data
     fetch('data.csv')
       .then(response => response.text())
       .then(text => {
@@ -166,12 +187,18 @@
         });
       });
 
+    // Restrict to digits only
+    document.getElementById('inputID').addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '');
+    });
+
     function checkUser() {
       const input = document.getElementById('inputID').value.trim();
       const nameBox = document.getElementById('nameBox');
       const cprBox = document.getElementById('cprBox');
       const mobileBox = document.getElementById('mobileBox');
       const resultSection = document.getElementById('result');
+      const notFound = document.getElementById('notFound');
 
       if (!input) {
         alert("الرجاء إدخال الرقم الشخصي أو رقم الهاتف");
@@ -185,9 +212,10 @@
         cprBox.value = user.cpr;
         mobileBox.value = user.mobile;
         resultSection.style.display = 'block';
+        notFound.style.display = 'none';
       } else {
-        alert("لم يتم العثور على السجل");
         resultSection.style.display = 'none';
+        notFound.style.display = 'block';
       }
     }
 
@@ -197,6 +225,7 @@
       document.getElementById('cprBox').value = '';
       document.getElementById('mobileBox').value = '';
       document.getElementById('result').style.display = 'none';
+      document.getElementById('notFound').style.display = 'none';
       document.getElementById('inputID').focus();
     }
 
@@ -220,5 +249,6 @@
     const hijriYear = parts.find(part => part.type === 'year').value;
     document.getElementById('yearHijri').textContent = toArabicNums(hijriYear);
   </script>
+
 </body>
 </html>
