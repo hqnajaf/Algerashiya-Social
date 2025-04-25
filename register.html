@@ -6,17 +6,10 @@
   <title>طلب تسجيل - الجمعية العمومية</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     * { font-family: 'Cairo', sans-serif; }
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-      direction: rtl;
-      display: flex;
-      flex-direction: column;
-    }
+    html, body { height: 100%; margin: 0; padding: 0; background-color: #f9f9f9; direction: rtl; display: flex; flex-direction: column; }
     body { flex: 1; }
     .container {
       width: 90%;
@@ -41,9 +34,7 @@
       cursor: pointer;
       margin-bottom: 10px;
     }
-    .home-btn:hover {
-      background-color: #218838;
-    }
+    .home-btn:hover { background-color: #218838; }
     img {
       max-width: 120px;
       margin-top: 10px;
@@ -70,19 +61,26 @@
       text-align: center;
       box-sizing: border-box;
     }
-    button {
+    .buttons-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+    .buttons-group button {
+      flex: 1;
+      min-width: 90px;
       background-color: #28a745;
-      color: white;
       border: none;
+      color: white;
       padding: 10px;
-      width: 210px;
-      font-size: 16px;
+      font-size: 14px;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
     }
-    button:hover { background-color: #218838; }
-    #nextBtn { display: none; }
+    .buttons-group button:hover { background-color: #218838; }
+    #nextBtn, #formSection { display: none; }
     .success-msg, .error-msg {
       display: none;
       font-weight: bold;
@@ -92,26 +90,11 @@
       margin-top: 10px;
       text-align: center;
     }
-    .success-msg {
-      color: green;
-      border: 2px solid green;
-      background-color: #eaffea;
-    }
-    .error-msg {
-      color: red;
-      border: 2px solid red;
-      background-color: #ffeaea;
-    }
-    .form-section {
-      display: none;
-      margin-top: 20px;
-      width: 100%;
-      animation: fadeIn 0.5s ease-in;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    .success-msg { color: green; border: 2px solid green; background-color: #eaffea; }
+    .error-msg { color: red; border: 2px solid red; background-color: #ffeaea; }
+    .social-icons { margin-bottom: 10px; text-align: center; }
+    .social-icons a { margin: 0 6px; font-size: 20px; color: #555; text-decoration: none; transition: color 0.3s ease; }
+    .social-icons a:hover { color: #007bff; }
     footer {
       font-size: 14px;
       color: #555;
@@ -121,18 +104,6 @@
       line-height: 1.8;
       background-color: #f9f9f9;
     }
-    .social-icons {
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    .social-icons a {
-      margin: 0 6px;
-      font-size: 20px;
-      color: #555;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    .social-icons a:hover { color: #007bff; }
   </style>
 </head>
 <body>
@@ -182,18 +153,18 @@
     <button id="nextBtn" onclick="showForm()">الخطوة التالية</button>
   </div>
 
-  <div id="formSection" class="form-section">
+  <div id="formSection">
     <input type="text" id="fullName" placeholder="الاسم الكامل" required>
-
     <input type="text" id="dobDisplay" readonly>
-
     <input type="tel" id="cprNumber" placeholder="الرقم الشخصي (9 أرقام)" maxlength="9" required>
-
     <input type="tel" id="mobileNumber" placeholder="رقم الهاتف (8 أرقام)" maxlength="8" required>
+    <input type="file" id="cprCopy" accept="image/*">
 
-    <input type="file" id="photoUpload" accept="image/*" capture="environment">
-
-    <button onclick="submitForm()">إرسال</button>
+    <div class="buttons-group">
+      <button onclick="generatePDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+      <button onclick="sendWhatsApp()">إرسال</button>
+      <button onclick="resetForm()">مسح</button>
+    </div>
   </div>
 
 </div>
@@ -210,6 +181,7 @@
 </footer>
 
 <script>
+// JavaScript Starts
 function populateDays() {
   const daySelect = document.getElementById('day');
   for (let d = 1; d <= 31; d++) {
@@ -270,23 +242,75 @@ function showForm() {
   const day = document.getElementById('day').value;
   const month = document.getElementById('month').value;
   const year = document.getElementById('year').value;
+
   document.getElementById('dobSection').style.display = 'none';
   document.getElementById('formSection').style.display = 'block';
   document.getElementById('dobDisplay').value = `${day}/${month}/${year}`;
 }
 
-function submitForm() {
+function resetForm() {
+  location.reload();
+}
+
+function generatePDF() {
   const name = document.getElementById('fullName').value.trim();
+  const dob = document.getElementById('dobDisplay').value.trim();
   const cpr = document.getElementById('cprNumber').value.trim();
   const mobile = document.getElementById('mobileNumber').value.trim();
+  const cprCopy = document.getElementById('cprCopy').files[0];
 
-  if (name === "" || cpr.length !== 9 || mobile.length !== 8) {
-    alert('يرجى تعبئة جميع الحقول بشكل صحيح.');
+  if (!name || !dob || cpr.length !== 9 || mobile.length !== 8 || !cprCopy) {
+    alert('يرجى تعبئة جميع الحقول وتحميل نسخة من البطاقة.');
     return;
   }
 
-  alert('تم إرسال البيانات بنجاح.');
-  // Here you can add WhatsApp redirection or server sending logic
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const imgData = e.target.result;
+
+    const pdfContent = document.createElement('div');
+    pdfContent.style.padding = '20px';
+    pdfContent.innerHTML = `
+      <h2 style="text-align:center;">طلب انضمام اللجنة العمومية</h2>
+      <p><strong>الاسم الكامل:</strong> ${name}</p>
+      <p><strong>تاريخ الميلاد:</strong> ${dob}</p>
+      <p><strong>الرقم الشخصي:</strong> ${cpr}</p>
+      <p><strong>رقم الهاتف:</strong> ${mobile}</p>
+      <p><strong>نسخة البطاقة:</strong></p>
+      <img src="${imgData}" style="max-width:100%; height:auto;"/>
+    `;
+
+    html2pdf().from(pdfContent).set({
+      margin: 10,
+      filename: 'طلب_انضمام_اللجنة_العمومية.pdf',
+      html2canvas: { scale: 2 },
+      jsPDF: { orientation: 'portrait' }
+    }).save();
+  };
+  reader.readAsDataURL(cprCopy);
+}
+
+function sendWhatsApp() {
+  const name = document.getElementById('fullName').value.trim();
+  const dob = document.getElementById('dobDisplay').value.trim();
+  const cpr = document.getElementById('cprNumber').value.trim();
+  const mobile = document.getElementById('mobileNumber').value.trim();
+  const cprCopy = document.getElementById('cprCopy').files[0];
+
+  if (!name || !dob || cpr.length !== 9 || mobile.length !== 8 || !cprCopy) {
+    alert('يرجى تعبئة جميع الحقول وتحميل نسخة من البطاقة قبل الإرسال.');
+    return;
+  }
+
+  // First generate PDF before sending
+  generatePDF();
+
+  // Then open WhatsApp
+  setTimeout(() => {
+    const message = `السلام عليكم%0Aانا ${name}%0Aارغب في الانضمام الى اللجنة العمومية للحسينية%0Aمعلوماتي:%0A- الاسم: ${name}%0A- تاريخ الميلاد: ${dob}%0A- الرقم الشخصي: ${cpr}%0A- رقم الهاتف: ${mobile}`;
+    const whatsappURL = `https://api.whatsapp.com/send?phone=97337777105&text=${message}`;
+    window.open(whatsappURL, '_blank');
+  }, 2000);
 }
 
 const now = new Date();
