@@ -39,7 +39,6 @@
       font-size: 14px;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
       margin-bottom: 10px;
     }
     .home-btn:hover {
@@ -47,6 +46,7 @@
     }
     img {
       max-width: 120px;
+      margin-top: 10px;
       margin-bottom: 5px;
     }
     h2 {
@@ -59,12 +59,16 @@
       gap: 10px;
       margin-bottom: 15px;
     }
-    select {
+    select, input[type="text"], input[type="file"], input[type="tel"] {
       padding: 10px;
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid #ccc;
       background-color: #fff;
+      width: 85%;
+      margin-bottom: 15px;
+      text-align: center;
+      box-sizing: border-box;
     }
     button {
       background-color: #28a745;
@@ -98,6 +102,25 @@
       border: 2px solid red;
       background-color: #ffeaea;
     }
+    .form-section {
+      display: none;
+      margin-top: 20px;
+      width: 100%;
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    footer {
+      font-size: 14px;
+      color: #555;
+      border-top: 1px solid #ddd;
+      padding: 15px;
+      text-align: center;
+      line-height: 1.8;
+      background-color: #f9f9f9;
+    }
     .social-icons {
       margin-bottom: 10px;
       text-align: center;
@@ -110,61 +133,68 @@
       transition: color 0.3s ease;
     }
     .social-icons a:hover { color: #007bff; }
-    footer {
-      font-size: 14px;
-      color: #555;
-      border-top: 1px solid #ddd;
-      padding: 15px;
-      text-align: center;
-      line-height: 1.8;
-      background-color: #f9f9f9;
-    }
   </style>
 </head>
 <body>
 
 <div class="container">
 
+  <img src="Logo-Black.png" alt="شعار" />
+
   <button class="home-btn" onclick="location.href='index.html'">
     العودة للرئيسية
   </button>
 
-  <img src="Logo-Black.png" alt="شعار" />
-
   <h2>طلب التسجيل للجنة العمومية</h2>
 
-  <div class="dob-selectors">
-    <select id="day">
-      <option value="">اليوم</option>
-    </select>
-    <select id="month">
-      <option value="">الشهر</option>
-      <option value="1">يناير</option>
-      <option value="2">فبراير</option>
-      <option value="3">مارس</option>
-      <option value="4">أبريل</option>
-      <option value="5">مايو</option>
-      <option value="6">يونيو</option>
-      <option value="7">يوليو</option>
-      <option value="8">أغسطس</option>
-      <option value="9">سبتمبر</option>
-      <option value="10">أكتوبر</option>
-      <option value="11">نوفمبر</option>
-      <option value="12">ديسمبر</option>
-    </select>
-    <select id="year">
-      <option value="">السنة</option>
-    </select>
+  <div id="dobSection">
+    <div class="dob-selectors">
+      <select id="day">
+        <option value="">اليوم</option>
+      </select>
+      <select id="month">
+        <option value="">الشهر</option>
+        <option value="1">يناير</option>
+        <option value="2">فبراير</option>
+        <option value="3">مارس</option>
+        <option value="4">أبريل</option>
+        <option value="5">مايو</option>
+        <option value="6">يونيو</option>
+        <option value="7">يوليو</option>
+        <option value="8">أغسطس</option>
+        <option value="9">سبتمبر</option>
+        <option value="10">أكتوبر</option>
+        <option value="11">نوفمبر</option>
+        <option value="12">ديسمبر</option>
+      </select>
+      <select id="year">
+        <option value="">السنة</option>
+      </select>
+    </div>
+
+    <button onclick="verifyAge()">تحقق من العمر</button>
+
+    <div id="errorMessage" class="error-msg"></div>
+    <div id="successMessage" class="success-msg">
+      ✅ يمكنك التسجيل للإنضمام للجنة العمومية للحسينية
+    </div>
+
+    <button id="nextBtn" onclick="showForm()">الخطوة التالية</button>
   </div>
 
-  <button onclick="verifyAge()">تحقق من العمر</button>
+  <div id="formSection" class="form-section">
+    <input type="text" id="fullName" placeholder="الاسم الكامل" required>
 
-  <div id="errorMessage" class="error-msg"></div>
-  <div id="successMessage" class="success-msg">
-    ✅ يمكنك التسجيل للإنضمام للجنة العمومية للحسينية
+    <input type="text" id="dobDisplay" readonly>
+
+    <input type="tel" id="cprNumber" placeholder="الرقم الشخصي (9 أرقام)" maxlength="9" required>
+
+    <input type="tel" id="mobileNumber" placeholder="رقم الهاتف (8 أرقام)" maxlength="8" required>
+
+    <input type="file" id="photoUpload" accept="image/*" capture="environment">
+
+    <button onclick="submitForm()">إرسال</button>
   </div>
-
-  <button id="nextBtn" onclick="goToNextStep()">الخطوة التالية</button>
 
 </div>
 
@@ -236,8 +266,27 @@ function verifyAge() {
   }
 }
 
-function goToNextStep() {
-  alert('سيتم الإنتقال للخطوة التالية.');
+function showForm() {
+  const day = document.getElementById('day').value;
+  const month = document.getElementById('month').value;
+  const year = document.getElementById('year').value;
+  document.getElementById('dobSection').style.display = 'none';
+  document.getElementById('formSection').style.display = 'block';
+  document.getElementById('dobDisplay').value = `${day}/${month}/${year}`;
+}
+
+function submitForm() {
+  const name = document.getElementById('fullName').value.trim();
+  const cpr = document.getElementById('cprNumber').value.trim();
+  const mobile = document.getElementById('mobileNumber').value.trim();
+
+  if (name === "" || cpr.length !== 9 || mobile.length !== 8) {
+    alert('يرجى تعبئة جميع الحقول بشكل صحيح.');
+    return;
+  }
+
+  alert('تم إرسال البيانات بنجاح.');
+  // Here you can add WhatsApp redirection or server sending logic
 }
 
 const now = new Date();
