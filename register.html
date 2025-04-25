@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>طلب تسجيل - الجمعية العمومية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: #f9f9f9;
+      direction: rtl;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body {
+      flex: 1;
+    }
+
+    .container {
+      width: 90%;
+      margin: 0 auto;
+      padding: 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+    }
+
+    img {
+      max-width: 120px;
+      margin-top: 0px;
+      margin-bottom: 5px;
+    }
+
+    .social-icons {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .social-icons a {
+      margin: 0 6px;
+      font-size: 20px;
+      color: #555;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: #007bff;
+    }
+
+    h2 {
+      margin: 5px 0 15px;
+      font-size: 22px;
+    }
+
+    .textbox {
+      padding: 10px;
+      width: 85%;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      text-align: center;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+
+    #dob {
+      padding: 10px;
+      font-size: 16px;
+      width: 60%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+      text-align: center;
+      background-color: #fff;
+    }
+
+    #verifyBtn, #nextBtn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 210px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #nextBtn {
+      display: none;
+    }
+
+    #verifyBtn:hover, #nextBtn:hover {
+      background-color: #218838;
+    }
+
+    .success-msg {
+      display: none;
+      color: green;
+      font-weight: bold;
+      border: 2px solid green;
+      background-color: #eaffea;
+      padding: 10px;
+      border-radius: 8px;
+      width: 85%;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    footer {
+      font-size: 14px;
+      color: #555;
+      border-top: 1px solid #ddd;
+      padding: 15px;
+      text-align: center;
+      line-height: 1.8;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <img src="Logo-Black.png" alt="شعار" />
+
+    <h2>طلب التسجيل للجنة العمومية</h2>
+
+    <label for="dob" style="font-weight: bold;">تاريخ الميلاد</label>
+    <input type="date" id="dob" name="dob" required>
+
+    <button id="verifyBtn" onclick="verifyAge()">تحقق من العمر</button>
+
+    <div id="successMessage" class="success-msg">
+      ✅ يمكنك التسجيل للإنضمام للجنة العمومية للحسينية
+    </div>
+
+    <button id="nextBtn" onclick="goToNextStep()">الخطوة التالية</button>
+
+  </div>
+
+  <div class="social-icons">
+    <a href="https://www.instagram.com/matam_algerashiya" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://api.whatsapp.com/send?phone=97337777105&text=إشتراك" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://t.me/joinchat/CfnBEtFt0C8xOTg0" target="_blank"><i class="fab fa-telegram"></i></a>
+  </div>
+
+  <footer>
+    <div>حسينية الگراشية - جميع الحقوق محفوظة</div>
+    <div>&copy; <span id="yearEn"></span> / <span id="yearHijri"></span> هـ</div>
+  </footer>
+
+  <script>
+    function verifyAge() {
+      const dob = document.getElementById('dob').value;
+      if (!dob) {
+        alert('الرجاء تحديد تاريخ الميلاد');
+        return;
+      }
+
+      const birthDate = new Date(dob);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      if (age >= 21) {
+        document.getElementById('successMessage').style.display = 'block';
+        document.getElementById('nextBtn').style.display = 'inline-block';
+      } else {
+        alert('عذرًا، لا يمكنك التسجيل لأن عمرك أقل من ٢١ سنة');
+      }
+    }
+
+    function goToNextStep() {
+      // Placeholder - later we'll move to full form
+      alert('سيتم الإنتقال للخطوة التالية.');
+    }
+
+    function toArabicNums(str) {
+      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+      return str.toString().split('').map(d => arabicNumbers[d] || d).join('');
+    }
+
+    const now = new Date();
+    document.getElementById('yearEn').textContent = now.getFullYear();
+    const hijriFormatter = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', { year: 'numeric' });
+    const hijriYear = hijriFormatter.formatToParts(now).find(part => part.type === 'year').value;
+    document.getElementById('yearHijri').textContent = toArabicNums(hijriYear);
+  </script>
+
+</body>
+</html>
