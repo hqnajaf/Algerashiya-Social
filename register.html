@@ -30,7 +30,7 @@
       margin: 10px 0 20px;
       font-size: 22px;
     }
-    input[type="text"], input[type="tel"], input[type="date"], input[type="file"] {
+    input[type="text"], input[type="tel"], input[type="file"] {
       padding: 10px;
       font-size: 16px;
       border-radius: 6px;
@@ -40,6 +40,23 @@
       margin-bottom: 15px;
       text-align: center;
       box-sizing: border-box;
+    }
+    input[type="date"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      width: 180px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .dob-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
     }
     .buttons-group {
       display: flex;
@@ -84,7 +101,12 @@
   <h2>طلب التسجيل للجنة العمومية</h2>
 
   <input type="text" id="fullName" placeholder="الاسم الكامل" required>
-  <input type="date" id="dobDisplay" required>
+
+  <div class="dob-group">
+    <label for="dobDisplay" style="font-weight:bold;">تاريخ الميلاد</label>
+    <input type="date" id="dobDisplay" required>
+  </div>
+
   <input type="tel" id="cprNumber" placeholder="الرقم الشخصي (9 أرقام)" maxlength="9" required>
   <input type="tel" id="mobileNumber" placeholder="رقم الهاتف (8 أرقام)" maxlength="8" required>
   <input type="file" id="cprCopy" accept="image/*">
